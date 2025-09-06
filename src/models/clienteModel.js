@@ -70,8 +70,18 @@ export const editarCliente = async (cedula, cliente) => {
             [nombre, apellido, correo, telefono, fecha_nacimiento, cedula]);
         return { cedula, nombre, apellido, correo, telefono, fecha_nacimiento }
     }
-
-
-
-
 }
+
+export const eliminarCliente = async (cedula) => {
+
+    let eliminado = null;
+    try {
+        await pool.query(`DELETE FROM persona WHERE cedula = ?`, [cedula]);
+        eliminado = true;
+        return eliminado;
+    } catch (error) {
+        eliminado = false;
+        return eliminado;
+    }
+
+};

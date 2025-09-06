@@ -11,7 +11,7 @@ export const findUserByEmail = async (correo) => {
 							 WHERE p.correo = ? LIMIT 1`;
     const [clientes] = await pool.query(sqlClientes, [correo]);
 
-    if (clientes === 0) {
+    if (clientes.length === 0) {
 
         //busca por barbero
 
@@ -21,7 +21,7 @@ export const findUserByEmail = async (correo) => {
 							 WHERE p.correo = ? LIMIT 1`;
         const [barberos] = await pool.query(sqlBarbero, [correo]);
 
-        if (barberos === 0) {
+        if (barberos.length === 0) {
 
             //busca por admin
 
