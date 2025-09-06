@@ -18,7 +18,7 @@ export const login = async (req, res) => {
 
 
         // Devolver solo datos públicos
-        return res.status(200).json({ message: `Bienvenido ${nombre}` });
+        return res.status(200).json({ message: `Has iniciado Sesion con Exito ${nombre}` });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Error interno" });
