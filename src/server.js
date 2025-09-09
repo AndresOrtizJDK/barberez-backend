@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import clienteRoutes from "./routes/clienteRoutes.js"
 import barberoRoutes from "./routes/barberoRoutes.js"
+import adminRoutes from "./routes/adminRoutes.js"
 
 import authRoutes from "./routes/authRoutes.js"
 
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/clientes', clienteRoutes);
 app.use('/api/barberos', barberoRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
 
 
