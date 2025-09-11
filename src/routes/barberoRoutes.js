@@ -5,7 +5,8 @@ import{
     crearBarbero,
     buscarBarbero,
     editarBarbero,
-    eliminarBarbero
+    eliminarBarbero,
+    confirmarCita
 } from "../controllers/barberoController.js"
 
 const router = express.Router();
@@ -15,5 +16,6 @@ router.post("/", crearBarbero);
 router.get("/:cedula", buscarBarbero);
 router.put("/:cedula", editarBarbero);
 router.delete("/:cedula", eliminarBarbero);
+router.post("/confirmar", confirmarCita);
 
 export default router;

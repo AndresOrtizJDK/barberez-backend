@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/clientes', clienteRoutes);
 app.use('/api/barberos', barberoRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/admins', adminRoutes);
 app.use('/api/auth', authRoutes);
 
 

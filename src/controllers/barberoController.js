@@ -27,7 +27,7 @@ export const editarBarbero = async (req, res) => {
 
     const barberoActualizado = await Barbero.editarBarbero(req.params.cedula, req.body);
 
-    res.status(200).json(barberoActualizado)
+    res.json(barberoActualizado)
 };
 
 export const eliminarBarbero = async (req, res) => {
@@ -40,4 +40,11 @@ export const eliminarBarbero = async (req, res) => {
 
     return res.status(200).json({ message: `Se Elimino al Barbero con Cedula: ${req.params.cedula} con Exito!` })
 
+};
+
+export const confirmarCita = async (req, res) => {
+
+    const citaActualizada = await Barbero.confirmarCita(req.body);
+
+    res.json(citaActualizada);
 };

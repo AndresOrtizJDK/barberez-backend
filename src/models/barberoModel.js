@@ -1,4 +1,5 @@
 import pool from "../config/db.js";
+import { buscarCliente } from "../models/clienteModel.js";
 import bcrypt from "bcrypt";
 
 // Obtener todos los Barberos (sin devolver la contraseña)
@@ -10,7 +11,7 @@ export const getBarberos = async () => {
 
 //Crear Barbero
 export const crearBarbero = async (barbero) => {
-    const { cedula, nombre, apellido, correo, password, telefono,} = barbero;
+    const { cedula, nombre, apellido, correo, password, telefono, } = barbero;
 
 
     // Encriptar la contraseña antes de guardar
@@ -33,7 +34,7 @@ export const crearBarbero = async (barbero) => {
 export const buscarBarbero = async (cedula) => {
 
     const [rows] = await pool.query(
-        `SELECT p.id_persona, p.nombre, p.cedula, p.apellido, p.correo, p.telefono
+        `SELECT p.id_persona, p.nombre, p.cedula, p.apellido, p.correo, p.telefono, c.id_barbero
          FROM persona p JOIN barbero c ON c.id_persona = p.id_persona
          WHERE p.cedula = ?;`,
         [cedula]
@@ -84,4 +85,38 @@ export const eliminarBarbero = async (cedula) => {
         return eliminado;
     }
 
+};
+
+export const confirmarCita = async (confirmacion) => {
+    const { cedula_barbero, cedula_cliente, fecha, hora, estado} = confirmacion;
+    try {
+
+        const barbero = await buscarBarbero(cedula_barbero);
+        if (!barbero) {
+            throw new Error('Barbero no existe');
+        }
+
+        const cliente = await buscarCliente(cedula_cliente);
+        if (!cliente) {
+            throw new Error('Cliente no existe');
+        }
+
+        const id_barbero = barbero.id_barbero;
+        const id_cliente = cliente.id_cliente;
+
+        const [citaEncontrada] = await pool.query(
+            `UPDATE cita
+              SET estado = ?
+              WHERE id_barbero = ?
+              AND id_cliente = ?
+              AND fecha = ?
+              AND hora = ?`,
+            [estado, id_barbero, id_cliente, fecha, hora]
+        );
+
+        return { id_cliente, id_barbero, fecha, hora, estado };
+    } catch (error) {
+        console.error('Error al Actualizar cita:', error);
+        throw error;
+    }
 };

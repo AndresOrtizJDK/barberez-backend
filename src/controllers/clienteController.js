@@ -39,6 +39,14 @@ export const eliminarCliente = async (req, res) => {
 
     return res.status(200).json({ message: `Se Elimino al cliente con Cedula: ${req.params.cedula} con Exito!` })
 
-
-
 };
+
+export const agendarCita = async (req,res) =>{
+    const agendarCita = await Cliente.agendarCita(req.body);
+    res.json(agendarCita)
+};
+
+export const misCitas = async (req,res) =>{
+    const misCitas = await Cliente.misCitas(req.params.cedula);
+    res.json(misCitas)
+}

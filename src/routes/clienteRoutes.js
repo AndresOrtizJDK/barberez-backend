@@ -7,7 +7,9 @@ import{
     crearCliente,
     buscarCliente,
     editarCliente,
-    eliminarCliente
+    eliminarCliente,
+    agendarCita,
+    misCitas
 } from "../controllers/clienteController.js"
 
 
@@ -18,5 +20,7 @@ router.post("/", crearCliente);
 router.get("/:cedula", buscarCliente);
 router.put("/:cedula", editarCliente);
 router.delete("/:cedula", eliminarCliente);
+router.post("/agendar", agendarCita);
+router.get('/citas/:cedula', misCitas);
 
 export default router;
