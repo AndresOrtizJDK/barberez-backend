@@ -13,9 +13,9 @@ export const crearAdmin = async (req, res) => {
 
 export const buscarAdmin = async (req, res) => {
 
-    const Admin = await Admin.buscarAdmin(req.params.cedula);
+    const admin = await Admin.buscarAdmin(req.params.cedula);
 
-    if (!Admin) {
+    if (!admin) {
         return res.status(404).json({ message: `No se encontró al Admin con Cedula: ${req.params.cedula}` });
     }
 
@@ -40,4 +40,18 @@ export const eliminarAdmin = async (req, res) => {
 
     return res.status(200).json({ message: `Se Elimino al Admin con Cedula: ${req.params.cedula} con Exito!` })
 
+};
+
+export const historialCitas = async (req, res) => {
+    const citas = await Admin.historialCitas();
+    res.json(citas);
+};
+
+export const citasConfirmadas = async (req, res) => {
+    const citasConfirmada = await Admin.citasConfirmadas();
+    res.json(citasConfirmada);
+};
+export const citasPendientes = async (req, res) => {
+    const citasPendiente = await Admin.citasPendientes();
+    res.json(citasPendiente);
 };

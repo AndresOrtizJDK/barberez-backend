@@ -10,7 +10,7 @@ export const getAdmins = async () => {
 
 //Crear admin
 export const crearAdmin = async (admin) => {
-    const { cedula, nombre, apellido, correo, password, telefono,} = admin;
+    const { cedula, nombre, apellido, correo, password, telefono, } = admin;
 
 
     // Encriptar la contraseña antes de guardar
@@ -84,4 +84,115 @@ export const eliminarAdmin = async (cedula) => {
         return eliminado;
     }
 
+};
+
+export const historialCitas = async () => {
+    const [citas] = await pool.query(`
+        SELECT p.cedula AS cedula_cliente, p.nombre AS nombre_cliente, p.apellido AS apellido_cliente,
+               c.id_cita, c.id_barbero, c.fecha, c.hora, c.estado,
+               pb.cedula AS cedula_barbero, pb.nombre AS nombre_barbero, pb.apellido AS apellido_barbero
+        FROM persona p
+        JOIN cliente cl ON p.id_persona = cl.id_persona
+        JOIN cita c ON c.id_cliente = cl.id_cliente
+        JOIN barbero b ON c.id_barbero = b.id_barbero
+        JOIN persona pb ON b.id_persona = pb.id_persona
+        order by c.fecha DESC, c.hora DESC;
+        `);
+
+    if (citas.length > 0) {
+        const citasFormateadas = citas.map((cita) => ({
+            id_cita: cita.id_cita,
+            datos_cliente: {
+                cedula: cita.cedula_cliente,
+                nombre: `${cita.nombre_cliente} ${cita.apellido_cliente}`,
+            },
+            datos_barbero: {
+                cedula: cita.cedula_barbero,
+                nombre: `${cita.nombre_barbero} ${cita.apellido_barbero}`,
+            },
+            datos_cita: {
+                fecha: cita.fecha,
+                hora: cita.hora,
+                estado: cita.estado,
+            }
+        }));
+
+        return citasFormateadas;
+    }
+
+    return [];
+};
+export const citasPendientes = async () => {
+    const [citas] = await pool.query(`
+        SELECT p.cedula AS cedula_cliente, p.nombre AS nombre_cliente, p.apellido AS apellido_cliente,
+               c.id_cita, c.id_barbero, c.fecha, c.hora, c.estado,
+               pb.cedula AS cedula_barbero, pb.nombre AS nombre_barbero, pb.apellido AS apellido_barbero
+        FROM persona p
+        JOIN cliente cl ON p.id_persona = cl.id_persona
+        JOIN cita c ON c.id_cliente = cl.id_cliente
+        JOIN barbero b ON c.id_barbero = b.id_barbero
+        JOIN persona pb ON b.id_persona = pb.id_persona
+        WHERE c.estado = "pendiente"
+        order by c.fecha DESC, c.hora DESC;
+        `);
+
+    if (citas.length > 0) {
+        const citasFormateadas = citas.map((cita) => ({
+            id_cita: cita.id_cita,
+            datos_cliente: {
+                cedula: cita.cedula_cliente,
+                nombre: `${cita.nombre_cliente} ${cita.apellido_cliente}`,
+            },
+            datos_barbero: {
+                cedula: cita.cedula_barbero,
+                nombre: `${cita.nombre_barbero} ${cita.apellido_barbero}`,
+            },
+            datos_cita: {
+                fecha: cita.fecha,
+                hora: cita.hora,
+                estado: cita.estado,
+            }
+        }));
+
+        return citasFormateadas;
+    }
+
+    return [];
+};
+export const citasConfirmadas = async () => {
+    const [citas] = await pool.query(`
+          SELECT p.cedula AS cedula_cliente, p.nombre AS nombre_cliente, p.apellido AS apellido_cliente,
+               c.id_cita, c.id_barbero, c.fecha, c.hora, c.estado,
+               pb.cedula AS cedula_barbero, pb.nombre AS nombre_barbero, pb.apellido AS apellido_barbero
+        FROM persona p
+        JOIN cliente cl ON p.id_persona = cl.id_persona
+        JOIN cita c ON c.id_cliente = cl.id_cliente
+        JOIN barbero b ON c.id_barbero = b.id_barbero
+        JOIN persona pb ON b.id_persona = pb.id_persona
+        WHERE c.estado = "confirmada"
+        order by c.fecha DESC, c.hora DESC;
+        `);
+
+    if (citas.length > 0) {
+        const citasFormateadas = citas.map((cita) => ({
+            id_cita: cita.id_cita,
+            datos_cliente: {
+                cedula: cita.cedula_cliente,
+                nombre: `${cita.nombre_cliente} ${cita.apellido_cliente}`,
+            },
+            datos_barbero: {
+                cedula: cita.cedula_barbero,
+                nombre: `${cita.nombre_barbero} ${cita.apellido_barbero}`,
+            },
+            datos_cita: {
+                fecha: cita.fecha,
+                hora: cita.hora,
+                estado: cita.estado,
+            }
+        }));
+
+        return citasFormateadas;
+    }
+
+    return [];
 };

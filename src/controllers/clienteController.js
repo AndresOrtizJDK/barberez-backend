@@ -50,3 +50,4 @@ export const misCitas = async (req,res) =>{
     const misCitas = await Cliente.misCitas(req.params.cedula);
     res.json(misCitas)
 }
+

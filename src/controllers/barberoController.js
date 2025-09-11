@@ -48,3 +48,8 @@ export const confirmarCita = async (req, res) => {
 
     res.json(citaActualizada);
 };
+export const barberoCitas = async (req, res) => {
+
+    const citasBarbero = await Barbero.barberoCitas(req.params.cedula);
+    res.json(citasBarbero);
+};
